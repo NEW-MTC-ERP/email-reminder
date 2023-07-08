@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include email_reminder *.css
+recursive-include email_reminder *.csv
+recursive-include email_reminder *.html
+recursive-include email_reminder *.ico
+recursive-include email_reminder *.js
+recursive-include email_reminder *.json
+recursive-include email_reminder *.md
+recursive-include email_reminder *.png
+recursive-include email_reminder *.py
+recursive-include email_reminder *.svg
+recursive-include email_reminder *.txt
+recursive-exclude email_reminder *.pyc
