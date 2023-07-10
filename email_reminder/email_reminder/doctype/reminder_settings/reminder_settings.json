@@ -1,0 +1,55 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-07-08 21:31:29.817806",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "document_types_section",
+  "doctypes",
+  "generate_fields"
+ ],
+ "fields": [
+  {
+   "fieldname": "document_types_section",
+   "fieldtype": "Section Break",
+   "label": "Document Types"
+  },
+  {
+   "fieldname": "doctypes",
+   "fieldtype": "Table",
+   "label": "Doctypes",
+   "options": "Reminder Doctypes"
+  },
+  {
+   "fieldname": "generate_fields",
+   "fieldtype": "Button",
+   "label": "Generate Fields"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2023-07-08 21:31:29.817806",
+ "modified_by": "Administrator",
+ "module": "Email Reminder",
+ "name": "Reminder Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
