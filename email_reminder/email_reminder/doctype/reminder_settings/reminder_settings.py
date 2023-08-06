@@ -4,30 +4,27 @@
 import frappe
 from frappe.model.document import Document
 
-
 class ReminderSettings(Document):
-    @frappe.whitelist()
     def generate_fields(self):
-        for i in self.doctypes:
-            data = self.get_fields(i)
-            for x in data:
-                fieldname = x['dt'] + "-" + ((x['label'].lower() if 'label' in x else "column_break_0")).replace(" ",
-                                                                                                                 "_")
-                cf_check = frappe.db.sql(""" SELECT * FROm `tabCustom Field` WHERE name=%s """, fieldname)
-                if len(cf_check) == 0:
-                    frappe.get_doc(x).insert(ignore_mandatory=1)
+        for doctype in self.doctypes:
+            data = self.get_fields(doctype)
+            for field in data:
+                fieldname = f"{field['dt']}-{(field['label'].lower() if 'label' in field else 'column_break_0').replace(' ', '_')}"
+                cf_check = frappe.db.sql("SELECT * FROM `tabCustom Field` WHERE name=%s", fieldname)
+                if not cf_check:
+                    frappe.get_doc(field).insert(ignore_mandatory=1)
 
-    def get_fields(self, i):
+    def get_fields(self, doc):
         return [
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "label": "Messages",
-                "fieldtype": "Tab Break",
+                "fieldtype": "Tab Break"
             },
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "insert_after": "messages",
                 "label": "Message",
                 "fieldtype": "Small Text",
@@ -35,7 +32,7 @@ class ReminderSettings(Document):
             },
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "insert_after": "message",
                 "label": "Date and Time",
                 "fieldtype": "Datetime",
@@ -43,13 +40,13 @@ class ReminderSettings(Document):
             },
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "insert_after": "date_and_time",
                 "fieldtype": "Column Break"
             },
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "label": "Emails",
                 "fieldtype": "Table",
                 "options": "Reminder Recipients",
@@ -57,10 +54,9 @@ class ReminderSettings(Document):
             },
             {
                 "doctype": "Custom Field",
-                "dt": i.document_type,
+                "dt": doc.document_type,
                 "label": "Send Email",
                 "insert_after": "emails",
                 "fieldtype": "Button"
-            },
-
+            }
         ]
