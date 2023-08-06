@@ -41,7 +41,9 @@ def create_reminder(message, emails_, doctype, docname):
         "document_no": docname,
         "emails": get_emails(emails_)
     }
-    rem = frappe.get_doc(obj).insert()
+    rem = frappe.get_doc(obj)
+    rem.flags.ignore_permissions = True
+    rem.insert()    
     rem.submit()
 
 
