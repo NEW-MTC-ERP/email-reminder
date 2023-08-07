@@ -9,8 +9,8 @@ $(document).on('app_ready', function() {
 							method: "email_reminder.utils.reminder.send_email",
 							args: {
 								message: cur_frm.doc.message,
-								recipients: cur_frm.doc.emails || [],
-								reminder_schedule_date: cur_frm.doc.date_and_time || "" ,
+								recipients: cur_frm.doc.emails,
+								reminder_schedule_date: cur_frm.doc.date_and_time,
 								doctype: cur_frm.doc.doctype,
 								docname: cur_frm.doc.name,
 								site: window.origin
@@ -53,9 +53,9 @@ function send_email(cur_frm) {
 	})
 }
 function filterFunction() {
-	var input = document.getElementById("myInput");
+	var input = document.getElementById("toggleInput");
     var filter = input.value.toUpperCase();
-    var div = document.getElementById("myDropdown");
+    var div = document.getElementById("toggleDropdown");
     var a = div.getElementsByTagName("a");
 
   for (i = 0; i < a.length; i++) {
@@ -65,7 +65,7 @@ function filterFunction() {
 }
 
 function toggleDropdown(display) {
-    var a = document.querySelectorAll("#myDropdown a");
+    var a = document.querySelectorAll("#toggleDropdown a");
 
     a.forEach(function(link) {
         link.style.display = display;
