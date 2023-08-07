@@ -1,6 +1,6 @@
 import frappe
 import json
-from frappe import __
+from frappe import _
 import re
 
 @frappe.whitelist()
@@ -8,36 +8,50 @@ def fetch_reminder_doctypes():
     reminder_doctypes = frappe.db.sql("""SELECT * FROM `tabReminder Doctypes`""", as_dict=1)
     return [doc.document_type for doc in reminder_doctypes]
 
-
 @frappe.whitelist()
 def send_email(message, recipients, reminder_schedule_date, doctype, docname, site):
     try:
         data = json.loads(recipients)
         emails = [email["email"] for email in data if email]
         if not emails:
-            frappe.throw(__("Please add at least one email"))
-            
+            frappe.throw(_("Please add at least one email"))
+        
+        doctype_fr = doctype.lower().replace(' ', '-')
+        document_link = f"<a href='{site}/app/{doctype_fr}/{docname}'>Open Document</a>"
         message = f"""{doctype}<br>" Reminder on Document {docname}<br><br>"{message}<br><br>"
-                <a href='{site}/app/{doctype.lower().replace(' ', '-')}/{docname}'>Open Document</a>"""
-
+                {document_link}"""
+        
         create_reminder(message, emails, doctype, docname)
 
         frappe.sendmail(
             recipients=emails,
-            subject="Details",
-            message=message,
+            subject=_("Details"),
+            message=_(message),
             send_after=reminder_schedule_date,
         )
 
-        return __("Success")
+        return "Success"
     
     except json.JSONDecodeError:
         frappe.log_error(f"JSON decoding error: {frappe.get_traceback()}")
-        return __("Invalid JSON format , Check It and Try Again")
+        return _("Invalid JSON format , Check It and Try Again")
     
+    except frappe.exceptions.ValidationError as ve:
+        frappe.log_error(f"Validation Error: {ve}\n{frappe.get_traceback()}")
+        return _("Validation Error")
+
+    except frappe.exceptions.LinkValidationError as lve:
+        frappe.log_error(f"Link Validation Error: {lve}\n{frappe.get_traceback()}")
+        return _("Link Validation Error")
+
+    except frappe.exceptions.PermissionError as pe:
+        frappe.log_error(f"Permission Error: {pe}\n{frappe.get_traceback()}")
+        return _("Permission Error")
+
     except Exception as e:
-        frappe.log_error(f"An Error Occurred: {e}\n{frappe.get_traceback()}")
-        return __("Failed")
+        frappe.log_error(f"An Unexpected Error Occurred: {e}\n{frappe.get_traceback()}")
+        return _("Unexpected Error")
+
 
 
 @frappe.whitelist()
@@ -58,8 +72,16 @@ def create_reminder(message, emails, doctype, docname):
 
 def get_emails(emails):
     emails_list = []
+    invalid_emails = []
     for email in emails:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            frappe.throw(__(f"Invalid Email, Please Check It ! {email}"))
-        emails_list.append({"email": email})
+            invalid_emails.append(email)
+        else:
+            emails_list.append({"email": email})
+
+    if invalid_emails:
+        error_message = f"Invalid Emails: {', '.join(invalid_emails)}"
+        frappe.throw(_(error_message))
+
     return emails_list
+
