@@ -9,7 +9,7 @@ app_license = "MIT"
 
 # Includes in <head>
 # ------------------
-app_include_js = "/assets/email_reminder/js/reminder_functions.js"
+app_include_js = "/assets/email_reminder/js/test.js"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/email_reminder/css/email_reminder.css"
 # app_include_js = "/assets/email_reminder/js/email_reminder.js"
