@@ -2,9 +2,6 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Reminder Settings', {
-    refresh:function(frm){
-        cur_frm.disable_save()
-    },
 	generate_fields: function(frm) {
         cur_frm.call({
             doc: cur_frm.doc,
@@ -22,9 +19,3 @@ frappe.ui.form.on('Reminder Settings', {
         })
 	}
 });
-
-// frappe.ui.form.on('Reminder Doctypes', {
-//     doctypes_remove:function(frm){
-//         cur_frm.trigger("generate_fields")
-//     },
-// });
