@@ -24,7 +24,7 @@ def send_email(message, recipients, reminder_schedule_date, doctype, docname, si
         message = f"""{doctype}<br>" Reminder on Document {docname}<br><br>"{message}<br><br>"
                 {document_link}"""
         
-        create_reminder(message, emails, doctype, docname)
+        create_reminder(message, emails, doctype, docname,reminder_schedule_date)
 
         frappe.sendmail(
             recipients=emails,
@@ -49,14 +49,15 @@ def send_email(message, recipients, reminder_schedule_date, doctype, docname, si
 
 
 @frappe.whitelist()
-def create_reminder(message, emails, doctype, docname):
+def create_reminder(message, emails, doctype, docname,reminder_schedule_date):
     reminder = frappe.get_doc(
         {
             "doctype": "Reminder",
-            "message": message,
+            "reminder": message,
             "document_type": doctype,
             "document_no": docname,
-            "emails": get_emails(emails),
+            "reminder_schedule_date":reminder_schedule_date,
+            "emails": get_emails(emails)
         }
     )
     reminder.flags.ignore_permissions = True

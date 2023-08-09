@@ -33,12 +33,12 @@ class ReminderSettings(Document):
                 custom_field.save()
 
     def get_fields(self, doc):
-        TabBreak = frappe._dict(fieldname = f"{doc.lower()}_messages",label = "Messages",fieldtype = "Tab Break", hidden = 0)
-        Message  = frappe._dict(fieldname = f"{doc.lower()}_message",label = "Message",fieldtype = "Small Text" , insert_after = f"{doc.lower()}_messages",allow_on_submit = 1)
-        DateFiled = frappe._dict(fieldname = f"{doc.lower()}_date_and_time",label = "Date and Time",fieldtype = "Datetime", insert_after =f"{doc.lower()}_message",allow_on_submit = 1)
-        Column_Break = frappe._dict(fieldname = f"{doc.lower()}_column_break",fieldtype = "Column Break" ,insert_after = f"{doc.lower()}_date_and_time")
-        EmailsField = frappe._dict(fieldname = f"{doc.lower()}_emails",label = "Emails",fieldtype = "Table", options= "Reminder Recipients",allow_on_submit = 1,insert_after =f"{doc.lower()}_column_break")
-        SendEmailButton = frappe._dict(fieldname = f"{doc.lower()}_send_email",label = "Send Email",fieldtype = "Button",insert_after = f"{doc.lower()}_emails")
+        TabBreak = frappe._dict(dt= f"{doc}" ,fieldname = f"{doc.lower()}_messages",label = "Messages",fieldtype = "Tab Break", hidden = 0)
+        Message  = frappe._dict(dt= f"{doc}" ,fieldname = "_message",label = "Message",fieldtype = "Small Text" , insert_after = f"{doc.lower()}_messages",allow_on_submit = 1)
+        DateFiled = frappe._dict(dt= f"{doc}" ,fieldname = "rmn_date_and_time",label = "Date and Time",fieldtype = "Datetime", insert_after ="_message",allow_on_submit = 1)
+        Column_Break = frappe._dict(dt= f"{doc}" ,fieldname = "rmn_column_break",fieldtype = "Column Break" ,insert_after = "rmn_date_and_time") 
+        EmailsField = frappe._dict(dt= f"{doc}" ,fieldname = "rmn_emails",label = "Emails",fieldtype = "Table", options= "Reminder Recipients",allow_on_submit = 1,insert_after ="rmn_column_break")
+        SendEmailButton = frappe._dict(dt= f"{doc}" ,fieldname = "send_email",label = "Send Email",fieldtype = "Button",insert_after = "rmn_emails")
         dfs = {doc:[
             TabBreak,Message,DateFiled,Column_Break,EmailsField,SendEmailButton
         ]}

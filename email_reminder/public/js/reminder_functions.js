@@ -4,13 +4,13 @@ $(document).on('app_ready', function() {
 		async: false,
 		callback: function (r) {
 			$.each(r.message, function(i, doctype) {
-				frappe.ui.form.on(doctype, "send_email", function(frm) {
+				frappe.ui.form.on(doctype, 'send_email', function(frm) {
 					frappe.call({
 							method: "email_reminder.utils.reminder.send_email",
 							args: {
-								message: cur_frm.doc.message,
-								recipients: cur_frm.doc.emails,
-								reminder_schedule_date: cur_frm.doc.date_and_time,
+								message: cur_frm.doc._message,
+								recipients: cur_frm.doc.rmn_emails,
+								reminder_schedule_date: cur_frm.doc.rmn_date_and_time,
 								doctype: cur_frm.doc.doctype,
 								docname: cur_frm.doc.name,
 								site: window.origin
