@@ -6,9 +6,6 @@ from frappe.model.document import Document
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 class ReminderSettings(Document):
-    def validate(self):
-        self.doctypes = []
-    
     @frappe.whitelist()
     def generate_fields(self, docs):
         if not isinstance(docs,list) or len(docs) == 0:return
@@ -19,6 +16,8 @@ class ReminderSettings(Document):
             fields = self.get_fields(doc)
             create_custom_fields(fields)
 
+        self.save(Document)
+        
     def disable_fields(self, docs):
         for doc in docs:
             custom_fields = frappe.get_all("Custom Field", filters={
