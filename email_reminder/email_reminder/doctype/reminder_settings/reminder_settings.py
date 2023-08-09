@@ -8,7 +8,8 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 class ReminderSettings(Document):
     @frappe.whitelist()
     def generate_fields(self, docs):
-        if not isinstance(docs,list) or len(docs) == 0:return
+        if not isinstance(docs,list) or len(docs) == 0:
+            return
         self.disable_fields(docs)
         for doc in docs:
             if not doc or frappe.db.exists("Doctype", doc):
